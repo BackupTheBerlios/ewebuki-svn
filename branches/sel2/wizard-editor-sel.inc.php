@@ -85,18 +85,30 @@
     
     // sobald ein doppelpunkt im ersten parameter ist es die bildergalerie on the fly :)
     if ( strstr($ausgaben["tagwerte0"],":") || strstr($cfg["wizard"]["add_tags"]["Selection"],"[SEL=:;") ) {
-        $hidedata["no_conflict"]["on"] = "on";
-        $dataloop["js_skripte"][10]["pfad"] = "/js/html/jquery-1.4.4.min.js";
-        $dataloop["js_skripte"][11]["pfad"] = "/js/html/jquery-ui-1.8.6.custom.min.js";
+        $hidedata["sel2"]["on"] = "on";
+        $hidedata["jquery"]["on"] = "on";
 
-
+        // ggf bilder aus db holen
         if (!strstr($ausgaben["tagwerte0"],":")) {
             $sql = "SELECT *
                             FROM site_file
                             WHERE fhit
                             LIKE '%p".$ausgaben["tagwerte0"].",%'";
             $result = $db -> query($sql);
-            filelist($result, "fileed",$ausgaben["tagwerte0"]);
+            while ( $data = $db -> fetch_array($result,1) ) {
+
+                preg_match("/#p".$ausgaben["tagwerte0"]."[,]*([0-9]*)#/i",$data["fhit"],$match);
+                echo $match[1];
+                $dataloop["list_files"][$match[1]] = array(
+                            "id"    => $data["fid"],
+                            "src"   => "/file/picture/thumbnail//tn_".$data["fid"],
+                            "ffart"  => $data["ffart"],
+                            "ffname" => $data["ffname"],
+                            "under" => $data["funder"],
+                            "desc"  => $data["fdesc"]
+                            );
+            }
+            ksort($dataloop["list_files"]);
             foreach ( $dataloop["list_files"] as $bild_id ) {
                 $sel_pics[] = $trenner.$bild_id["id"];
             }
@@ -130,8 +142,7 @@
             array_multisort( $sortarray, $dataloop["chosen_images"]);
             unset($dataloop["list_images"]);
         }
-        $hidedata["sel2"]["on"] = "on";
-        #unset($hidedata["sel"]);
+
         if ( is_array($_SESSION["file_memo"]) ) {
             $sess_images = implode(",",$_SESSION["file_memo"]);
         }
@@ -141,7 +152,7 @@
         $result = $db -> query($sql);
         // dataloop wird ueber eine share-funktion aufgebaut
         filelist($result, "fileed",$ausgaben["tagwerte0"]);
-        $dataloop["avail_images"] = $dataloop["list_images"];
+// Bildergalerie mit DB
     } else {
         $hidedata["sel_db"]["on"] = "on";
         // selection aus session/tag holen
