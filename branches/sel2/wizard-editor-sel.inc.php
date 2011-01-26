@@ -46,16 +46,16 @@
     // was anzeigen
     $mapping["main"] = "wizard-edit";
     $hidedata["sel_global"]["on"] = "on";
-    $hidedata["sel"] = array();
-    $hidedata["sel"]["num"] = $tag_marken[1] + 1;
+    $hidedata["sel_global"] = array();
+    $hidedata["sel_global"]["num"] = $tag_marken[1] + 1;
     $ausgaben["max_sel_num"] = $cfg["wizard"]["sel_edit"]["max_num"];
 
     // youtube nur fuer admin
     if ( priv_check("/","admin") ) $hidedata["youtube"]["enable"] = "enable";
 
     // ausgabenwerte werden belegt
-    $hidedata["sel"]["description"] = $tag_meat[$tag_marken[0]][$tag_marken[1]]["meat"];
-    if ( $_POST["description"] != "" ) $hidedata["sel"]["description"] = $_POST["description"];
+    $hidedata["sel_global"]["description"] = $tag_meat[$tag_marken[0]][$tag_marken[1]]["meat"];
+    if ( $_POST["description"] != "" ) $hidedata["sel_global"]["description"] = $_POST["description"];
 
     $tag_werte = explode(";",str_replace(array("[SEL=","[SEL","]"),"",$tag_meat[$tag_marken[0]][$tag_marken[1]]["tag_start"]));
     for ($i=0;$i<=5;$i++) {
@@ -80,9 +80,8 @@
         );
     }
     // checkboxen
-    if ( $ausgaben["tagwerte2"] != "" ) $hidedata["sel"]["check_thumb"] = " checked=\"true\"";
-    if ( $ausgaben["tagwerte4"] != "" ) $hidedata["sel"]["check_lbox"] = " checked=\"true\"";
-    
+    if ( $ausgaben["tagwerte2"] != "" ) $hidedata["sel_global"]["check_thumb"] = " checked=\"true\"";
+    if ( $ausgaben["tagwerte4"] != "" ) $hidedata["sel_global"]["check_lbox"] = " checked=\"true\"";
     // sobald ein doppelpunkt im ersten parameter ist es die bildergalerie on the fly :)
     if ( strstr($ausgaben["tagwerte0"],":") || strstr($cfg["wizard"]["add_tags"]["Selection"],"[SEL=:;") ) {
         $hidedata["sel2"]["on"] = "on";
@@ -220,6 +219,12 @@
             for ($i = 0; $i <= 5; $i++) {
                 $tag_werte[] = $_POST["tagwerte"][$i];
             }
+
+//echo "<pre>";
+//print_r($_POST);
+//echo "</pre>";
+//exit;
+
         $to_insert = "[SEL=".implode(";",$tag_werte)."]".$_POST["description"]."[/SEL]";
         
         if ( $cfg["wizard"]["sel_edit"]["max_num"] != "" && count(explode(":",$_POST["tagwerte"][3])) > $cfg["wizard"]["sel_edit"]["max_num"] ) {
