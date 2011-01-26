@@ -97,7 +97,6 @@
             while ( $data = $db -> fetch_array($result,1) ) {
 
                 preg_match("/#p".$ausgaben["tagwerte0"]."[,]*([0-9]*)#/i",$data["fhit"],$match);
-                echo $match[1];
                 $dataloop["list_files"][$match[1]] = array(
                             "id"    => $data["fid"],
                             "src"   => "/file/picture/thumbnail//tn_".$data["fid"],
