@@ -46,9 +46,11 @@
     // was anzeigen
     $mapping["main"] = "wizard-edit";
     $hidedata["sel_global"]["on"] = "on";
+    $hidedata["sel"]["on"] = "on";
     $hidedata["sel_global"] = array();
     $hidedata["sel_global"]["num"] = $tag_marken[1] + 1;
     $ausgaben["max_sel_num"] = $cfg["wizard"]["sel_edit"]["max_num"];
+    $ausgaben["check_id"] = "grid_list";
 
     // youtube nur fuer admin
     if ( priv_check("/","admin") ) $hidedata["youtube"]["enable"] = "enable";
@@ -86,6 +88,7 @@
     if ( strstr($ausgaben["tagwerte0"],":") || strstr($cfg["wizard"]["add_tags"]["Selection"],"[SEL=:;") ) {
         $hidedata["sel2"]["on"] = "on";
         $hidedata["jquery"]["on"] = "on";
+        $ausgaben["check_id"] = "grid_list_2";
 
         // ggf bilder aus db holen
         if (!strstr($ausgaben["tagwerte0"],":")) {
