@@ -210,9 +210,11 @@
 
         if ( strstr($ausgaben["tagwerte0"],":") || strstr($cfg["wizard"]["add_tags"]["Selection"],"[SEL=:;") ) {
             $_POST["tagwerte"][0] = "";
-            foreach ( $_POST["pics"] as $value ) {
-                if ( $value == "" ) continue;
-                $_POST["tagwerte"][0] .= $value.":";
+            if (is_array($_POST["pics"]) ) {
+                foreach ( $_POST["pics"] as $value ) {
+                    if ( $value == "" ) continue;
+                    $_POST["tagwerte"][0] .= $value.":";
+                }
             }
             if ( $_POST["tagwerte"][0] == "" ) $_POST["tagwerte"][0] = ":";
         }
