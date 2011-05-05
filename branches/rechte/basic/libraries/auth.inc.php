@@ -202,13 +202,25 @@
 
         if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "uid = ".$_SESSION["uid"].$debugging["char"];
         if ( $_SESSION["uid"] != "" ) {
-            $sql = "SELECT level FROM ".$cfg["auth"]["db"]["level"]["entries"]."
-                    INNER JOIN ".$cfg["auth"]["db"]["right"]["entries"]."
-                    ON ".$cfg["auth"]["db"]["level"]["entries"].".".$cfg["auth"]["db"]["level"]["id"]." = ".$cfg["auth"]["db"]["right"]["entries"].".".$cfg["auth"]["db"]["right"]["levelkey"]."
-                    WHERE ".$cfg["auth"]["db"]["right"]["entries"].".uid = ".$_SESSION["uid"];
-            $result  = $db -> query($sql);
-            while ( $row = $db -> fetch_row($result) ) {
-                $rechte[$row[0]] = -1;
+            if ( $specialvars["security"]["new"] == -1 ) {
+                $buffy_start = array_sum(explode(' ', microtime()));
+                $sql = "Select * from auth_priv";
+                $result  = $db -> query($sql);
+                while ( $row = $db -> fetch_array($result) ) {
+                    if ( priv_check($environment["ebene"]."/".$environment["kategorie"],$row["priv"])) {
+                        $rechte[$row["priv"]] = -1;
+                    }
+                }
+               echo array_sum(explode(' ', microtime())) - $buffy_start;
+            } else {
+                $sql = "SELECT level FROM ".$cfg["auth"]["db"]["level"]["entries"]."
+                        INNER JOIN ".$cfg["auth"]["db"]["right"]["entries"]."
+                        ON ".$cfg["auth"]["db"]["level"]["entries"].".".$cfg["auth"]["db"]["level"]["id"]." = ".$cfg["auth"]["db"]["right"]["entries"].".".$cfg["auth"]["db"]["right"]["levelkey"]."
+                        WHERE ".$cfg["auth"]["db"]["right"]["entries"].".uid = ".$_SESSION["uid"];
+                $result  = $db -> query($sql);
+                while ( $row = $db -> fetch_row($result) ) {
+                    $rechte[$row[0]] = -1;
+                }
             }
             // load customer addon
             if ( $cfg["auth"]["custom"]["load"] == -1 ) {
@@ -248,7 +260,7 @@
 
         $hidedata["authInPlace"]["links"] = "on";
         foreach ( $cfg["auth"]["inplace"] as $key => $value ) {
-            if ( priv_check_old("",$value[0]) == True  || priv_check($environment["ebene"]."/".$environment["kategorie"],$value[0]) ) {
+            if ( $rechte[$value[0]] == -1   ) {
                 if ( strstr($key,"/") ){
                     $dataloop["authInPlace"][$key]["link"] = $pathvars["virtual"].$key.".html";
                 } else {
@@ -270,11 +282,7 @@
                 $end = "<br />";
             }
 
-            if ( $specialvars["security"]["new"] == -1 ) {
-                $check = priv_check("/admin/".$funktion."/".$werte[0],$werte[1]);
-            } else {
-                $check = priv_check_old("/admin/".$funktion."/".$werte[0]);
-            }
+            $check = $rechte[$werte[1]];
 
             if ( $check == True ) {
                 $dataloop["authTools"][$funktion]["url"] = $pathvars["virtual"]."/admin/".$funktion."/".$werte[0].".html";
