@@ -1,0 +1,89 @@
+================================================================================
+eWeBuKi todo
+
+$Id$
+================================================================================
+
+
+--- allgemein
+
+fix: alle libs die nicht immer geladen werden sollen, aus basic/libraries nach
+     modules/libraries umziehen
+
+feature: 301 handling
+feature: prefix fuer alle tabellen (zwei ewebuki in einer db)
+feature: sprachumschalter nur fuer sprachen die auch vorhanden sind.
+         zum anlegen von sprachen spezieller menupunkt.
+
+
+
+++ tagreplace
+
+bugfix: bilder mit IMGB tag funktionieren nicht nebeneinander
+        oder wenn sie sich zu nahe kommen, loesung?
+        - wird wohl so nicht so eifach, die implementierung eines
+          div Tag loesst evtl. das problem
+
+        (neue css version! bitte darauf hin untersuchen)
+
+feature: LIST tag mehr als einmal einruecken lassen
+feature: IN, css steuerbar?, x Farben und x Groesse über content
+
+
+
+++ auth
+
+security: probleme register globals = on und $rechte array untersuchen
+
+
+
+
+--- modules
+
+-> usered
+
+bugfix: wird $rechte array immer noch beim anlegen eines neuer user
+        ueberschrieben?
+
+
+
+-> contented (in arbeit, war cms)
+
+feature: gemeinsame lib mit fileed fuer anzeige der files
+feature: roter rahmen markiert locked content
+feature: marke "roter haken" einstellbar vorher oder nachher
+(feature:) lock content beim editieren, wobei ein lock loesbar sein muss
+           -> besser hervorheben! z.B. roter rahmen um edit field!
+feature: eine (extra tabelle?) mit username, timestamp, content-text
+         der gespeichert wurde. da hätte man dann auch gleich eine
+         historie ...
+         und der db-admin könnte 'frühere' inhalte wieder herstellen.
+
+
+-> fileed (filled2 in arbeit)
+
+feature: beschreibung des bild im viewer?
+feature: ueber die groessenaenderungen informieren
+feature: moeglichkeit bilder auf dem server erneut zu aendern
+feature: wenn orginal bilder erhalten bleiben, diese in einem neuen fenster oeffnen
+feature: language support fuer hochgeladenen bilder?
+
+
+
+-> menued (menued2 in arbeit)
+
+bugfix: verhindern das move entry feld geaendert werden kann
+bugfix: schutze der refid, falschen wert evtl. wegschmeissen
+feature: einmal zum auf- und zuklappen, oder nur anzeige der hauptpunkte und
+         dann nur noch den jeweiligen punkt
+
+
+-> bloged
+
+feature: bei der erfassung/änderung von news könnte ein dropdown mit einer
+         einstellbaren 'Anzeigedauer ab Erfassung/Änderung' von Vorteil sein:
+         1 woche ... 4 Wochen ... Quartal ... Halbjahr.
+         nenne es 'showweeks' oder so. und speichere die anzahl
+         der wochen da drin. max. 52 für ein jahr
+
+#EOF

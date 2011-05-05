@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>leveled.details</title>
+<link rel="stylesheet" href="../../css/default.css" type="text/css">
+</head>
+<body bgcolor="#FFFFFF">
+<!--##begin-->
+<!--$Id$-->
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+  <tr> 
+    <td bgcolor="#EC9379">#(ueberschrift)</td>
+  </tr>
+  <tr> 
+    <td> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="2">
+        <tr> 
+          <td>#(inhalt)</td>
+        </tr>
+        <tr> 
+          <td>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr> 
+                <td width="50%">#(level)</td>
+                <td width="50%">#(beschreibung)</td>
+              </tr>
+              <tr> 
+                <td width="50%">!#ausgaben_level</td>
+                <td width="50%">!#ausgaben_beschreibung</td>
+              </tr>
+              <tr> 
+                <td colspan="2">&nbsp;</td>
+              </tr>
+              <tr> 
+                <td colspan="2">#(user)</td>
+              </tr>
+              <tr>
+                <td colspan="2">!#ausgaben_users</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr> 
+          <td align="right"><a href="!#ausgaben_link_edit">#(edit)</a> <a href="!#ausgaben_link_list">#(list)</a></td>
+        </tr>
+        <tr>
+          <td> !#ausgaben_output<br>
+            !#ausgaben_inaccessible</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!--##end-->
+</body>
+</html>

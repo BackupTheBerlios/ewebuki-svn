@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<title>righted.modify</title>
+<link rel="stylesheet" href="../../css/default/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/default/eed.css" type="text/css" media="screen" />
+</head>
+<body>
+<!--##begin-->
+<!--$Id$-->
+<script type="text/javascript">
+  function resetForm(){
+     document.forms['modify'].reset();
+  }
+
+function anzeigen(id) {
+show = document.getElementById(id).style.display;
+if ( show == 'none' ) {
+new Effect.BlindDown(id);
+} else {
+new Effect.BlindUp(id)
+}
+return false;
+}
+
+</script>
+<form method="post" action="!#ausgaben_form_aktion" id="eEd">
+    <h1>#(ueberschrift)</h1>
+    <p>#(inhalt)</p>
+    <a style="cursor: pointer" onclick="anzeigen('legende');">[ Legende ]</a>
+    <div id="legende" style="display:none;margin-left:10px">
+    <!--##loop-legende-->
+        <div class="clearer"></div>
+        <div style="background:!{color};border:1px solid ;width:1.5em;height:1.5em;float:left"></div>&nbsp;!{text}
+    <!--##cont-->
+    </div>
+    <p>!#ausgaben_form_error</p>
+    <h2>#(url) !#ausgaben_url</h2>
+
+    <!--##loop-infos-->
+    <div class="clearer"></div>
+    <div style="border:1px solid;margin-left:10px">
+    !{url} !{info}
+    <div class="clearer"></div>
+    </div>
+    <!--##cont-->
+
+    <fieldset>
+        <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="first" />
+        <div class="clearer"></div>
+    </fieldset>
+
+</form>
+<p>!#ausgaben_output</p>
+<p>!#ausgaben_inaccessible</p>
+<!--##end-->
+</body>
+</html>

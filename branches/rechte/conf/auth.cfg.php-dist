@@ -1,0 +1,115 @@
+<?php
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// "$Id$";
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+    eWeBuKi - a easy website building kit
+    Copyright (C)2001-2007 Werner Ammon ( wa<at>chaos.de )
+
+    This script is a part of eWeBuKi
+
+    eWeBuKi is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    eWeBuKi is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with eWeBuKi; If you did not, you may download a copy at:
+
+    URL:  http://www.gnu.org/licenses/gpl.txt
+
+    You may also request a copy from:
+
+    Free Software Foundation, Inc.
+    59 Temple Place, Suite 330
+    Boston, MA 02111-1307
+    USA
+
+    You may contact the author/development team at:
+
+    Chaos Networks
+    c/o Werner Ammon
+    Lerchenstr. 11c
+
+    86343 K�nigsbrunn
+
+    URL: http://www.chaos.de
+*/
+////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
+
+    $cfg["auth"] = array(
+           "subdir" => "",
+             "name" => "",
+            "basis" => $pathvars["virtual"]."",
+           "hidden" => array(
+                     "set" => False,
+               "kategorie" => "login",
+                       ),
+            "boxed" => False,
+               "db" => array(
+                    "user" => array(
+                          "entries" => "auth_user",
+                               "id" => "uid",
+                            "alias" => "username",
+                         "forename" => "vorname",
+                          "surname" => "nachname",
+                            "email" => "email",
+                             "pass" => "pass",
+                           "custom" => ""
+                              ),
+                   "right" => array(
+                          "entries" => "auth_right",
+                               "id" => "",
+                         "levelkey" => "lid",
+                          "userkey" => ""
+                              ),
+                   "level" => array(
+                          "entries" => "auth_level",
+                               "id" => "lid",
+                              ),
+                 "special" => array(
+                          "entries" => "auth_special",
+                          "userkey" => "suid",
+                       "contentkey" => "content",
+                         "dbasekey" => "sdb",
+                         "tnamekey" => "stname"
+                              ),
+                       ),
+           "custom" => array(
+                    "load" => 0,
+                    "path" => "setit",
+                    "file" => "base.name",
+                       ),
+            "ghost" => array(
+               "contented" => "cms_edit",
+                 "righted" => "cms_admin",
+                       ),
+             "menu" => array(
+                 "grouped" => array("list", "disabled"),
+                  "prived" => array("list", "disabled"),
+                 "leveled" => array("list", "cms_admin"),
+                  "usered" => array("list", "cms_admin"),
+                  "menued" => array("list", "cms_admin"),
+                  "fileed" => array("list", "cms_edit"),
+                  "passed" => array("modify","cms_edit"),
+                  "bloged" => array("list","disabled"),
+             # "" = jeder; "ein wert" = nur dieses recht; "recht1;recht2" = beide rechte
+                       ),
+            "inplace" => array(
+                              "new" => array("cms_admin","g(new)"),
+       "/admin/contented/history,," => array("cms_admin","g(history)"),
+                      #"/wizard/add" => array("disabled","g(wizard-add)"),
+                     #"/wizard/show" => array("disabled","g(wizard-show)"),
+                  #"/wizard/release" => array("disabled","g(wizard-release)"),
+              #"/keywords/edit_page" => array("disabled","g(add_keywords)"),
+                             #"move" => array("disabled")
+                       ),
+    );
+
+////+///////+///////+///////+///////+///////+///////+///////////////////////////////////////////////////////////
+?>

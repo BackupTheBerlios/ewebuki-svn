@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<title>grouped.modify</title>
+<link rel="stylesheet" href="../../css/default/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/default/eed.css" type="text/css" media="screen" />
+</head>
+<body>
+<!--##begin-->
+<!--$Id$-->
+<script type="text/javascript">
+  function resetForm(){
+     document.forms['modify'].reset();
+  }
+</script>
+<form method="post" action="!#ausgaben_form_aktion" id="eEd">
+    <h1>#(ueberschrift)</h1>
+    <p>#(inhalt)</p>
+    <p>!#ausgaben_form_error</p>
+    <fieldset>
+        <label for="level">#(group)</label>
+        !#element_ggroup
+        <label for="description">#(description)</label>
+        !#element_beschreibung
+        <div class="clearer"></div>
+    </fieldset>
+    <fieldset class="float">
+        <input id="user_search" onkeyup="aj_search()" />
+        <div class="clearer"></div>
+        <div style="width:49%;float:left">
+            <ul  style="padding:5px;border: 2px dashed;" id="avail_user">
+                <li><b>#(avail)</b></li>
+                <!--##loop-avail-->
+                <li id="doc_!{value}" class="sel_item">!{vorname} !{name} (!{username})</li>
+                <!--##cont-->
+            </ul>
+        </div>
+        <div style="width:49%;float:right">
+            <ul style="padding:5px;border: 2px dashed" id="chosen_user">
+                <li><b>#(actual)</b></li>
+                <!--##loop-actual-->
+                <li id="doc_!{value}" class="sel_item">!{vorname} !{name} (!{username})</li>
+                <!--##cont-->
+            </ul>
+        </div>
+
+    </fieldset>
+
+    <fieldset>
+        <input type="submit" name="send[]" value="g(send)" class="first" />
+        <input type="reset" name="reset" value="g(reset)" class="next" />
+        <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
+        <div class="clearer"></div>
+    </fieldset>
+</form>
+<p id="output"></p>
+<p>!#ausgaben_inaccessible</p>
+
+<script type="text/javascript">
+window.onload = create_sortable;
+
+function aj_search() {
+        new Ajax.Updater('avail_user','!#pathvars_uri',{
+                parameters: { ajaxsuche:'on',text:$F('user_search')} ,
+                onComplete:function(){ Sortable.destroy('avail_user');Sortable.destroy('chosen_user');create_sortable() }
+            } );
+}
+
+function create_sortable() {
+
+    Sortable.create('avail_user',{
+        tag:'li',
+        constraint: false,
+        dropOnEmpty: true,
+        containment: ['chosen_user'],
+        only:'sel_item',
+        evalScripts:true,
+        asynchronous:true,
+        onUpdate: function(){
+            new Ajax.Updater('output','!#pathvars_uri',{parameters:'ajax=on&' + Sortable.serialize("chosen_user")});
+                            }
+    }
+    );
+
+    Sortable.create('chosen_user',{
+        tag:'li',
+        constraint: false,
+        dropOnEmpty: true,
+        containment: ['avail_user'],
+        only:'sel_item',
+        evalScripts:true,
+        asynchronous:true,
+        onUpdate: function(){
+            new Ajax.Updater('output','!#pathvars_uri',{parameters:'ajax=on&' + Sortable.serialize("chosen_user")});
+                            }
+    }
+    );
+}
+</script>
+<!--##end-->
+</body>
+</html>

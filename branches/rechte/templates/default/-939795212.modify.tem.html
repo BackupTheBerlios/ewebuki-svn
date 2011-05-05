@@ -1,0 +1,197 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<title>fileed.modify</title>
+<link rel="stylesheet" href="../../css/default/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/default/eed.css" type="text/css" media="screen" />
+</head>
+<body>
+<!--##begin-->
+<!--$Id$-->
+<script type="text/javascript">
+<!--
+  function resetForm(){
+     document.forms[0].reset();
+  }
+//-->
+    function anzeigen(id) {
+        if ( typeof(id) == 'string' ) {
+            var element = [id];
+        } else {
+            element = id;
+        }
+        for (i=0; i<element.length; i++) {
+            if ( $(element[i]) ) {
+                show = $(element[i]).style.display;
+                if ( show == 'none' ) {
+                    new Effect.BlindDown(element[i], {duration: 0.3});
+                } else {
+                    new Effect.BlindUp(element[i], {duration: 0.3})
+                }
+            }
+        }
+        return false;
+    }
+</script>
+<form method="post" action="!#ausgaben_form_aktion" id="eEd" enctype="multipart/form-data">
+
+    <div id="file_edit" style="!#ausgaben_style_file_edit;">
+        <h1>#(ueberschrift)</h1>
+        <p>#(inhalt)</p>
+        <p>!#ausgaben_form_error</p>
+        <fieldset class="float">
+            <!--##hide-preview_img-->
+            <a title="Vorschau klein (small)" href="!{path}!{id}/s/" rel="lightbox[]" style="float:right;padding-bottom:20px;background:#FFFFFF url('/images/default/filefind.png') no-repeat right bottom;">
+                <img src="!{path}!{id}/s/" alt="" style="float:right;" />
+            </a>
+            <a title="Vorschau mittel (middle)" href="!{path}!{id}/m/" rel="lightbox[]" style="display:none;">
+                <img src="!{path}!{id}/m/" alt="" />
+            </a>
+            <a title="Vorschau gro&szlig; (big)" href="!{path}!{id}/b/" rel="lightbox[]" style="display:none;">
+                <img src="!{path}!{id}/b/" alt="" />
+            </a>
+            <a title="Vorschau Original (original)" href="!{path}!{id}/o/" rel="lightbox[]" style="display:none;">
+                <img src="!{path}!{id}/o/" alt="" />
+            </a>
+            <!--##show-->
+            <!--##hide-preview_def-->
+            <img src="!{file}" alt="" style="float:right;" />
+            <!--##show-->
+            <label style="clear:left;">#(ffname)
+                !#element_ffname
+            </label>
+            <label style="clear:left;">#(funder)
+                !#element_funder
+            </label>
+            <label style="clear:left;">#(fdesc)
+                !#element_fdesc
+            </label>
+            <label style="clear:left;">#(fhit)
+                <!--##hide-fhit_admin-->
+                !#element_fhit
+                <!--##show-->
+                <!--##hide-fhit_dummy-->
+                <input id="fhit_dummy" class="" type="text" value="!{value}" name="fhit_dummy" />
+                <!--##show-->
+            </label>
+            <!--##hide-upload-->
+            <label style="clear:left;">#(replace)
+                #(upa)<br><input type="file" name="upload"><br>#(upb)
+            </label>
+            <!--##show-->
+        </fieldset>
+
+        <!--##hide-owner-->
+        <p>
+            #(fowner) <a href="mailto:!{email}">!{name}</a><br />!{error}
+        </p>
+        <!--##show-->
+
+        <!--##hide-all_groups_allowed-->
+        <p>
+            #(all_groups_allowed)
+        </p>
+        <!--##show-->
+
+        <!--##hide-show_allowed_groups-->
+        <p>
+            #(allowed_groups)
+            <p>
+                <!--##loop-avail_groups-->
+                <b>!{group}:</b>&nbsp;!{desc}<br />
+                <!--##cont-->
+            </p>
+        </p>
+        <!--##show-->
+
+        <!--##hide-grant-->
+        <p>
+            <h2>Wer soll die Datei bearbeiten k&ouml;nnen?</h2>
+            <div class="clearer">&nbsp;</div>
+            <fieldset>
+            <ul>
+                <li>
+                    <input name="grant_all" value="0" type="radio"!{radio_grant_me} />&nbsp;nur Sie und folgende ausgew&auml;hlte Gruppen
+                    <ul class="no-style" style="margin:5px 0;">
+                        <!--##loop-avail_groups-->
+                        <li style="margin:5px 0 5px 25px;">
+                            <input name="perm_groups[]" value="!{gid}" type="checkbox"!{check}!{disabled} />
+                            <div style="float:left;margin-left:5px;"><b>!{group}:</b><br />!{desc}</div>
+                            <div class="clearer"></div>
+                        </li>
+                        <!--##cont-->
+                    </ul>
+                </li>
+                <li><input name="grant_all" value="-1" type="radio"!{radio_grant_all} />&nbsp;alle angemeldeten Benutzer</li>
+            </ul>
+            </fieldset>
+
+        </p>
+        <!--##show-->
+
+        <!--##hide-references-->
+        <p>#(references)<br />!#ausgaben_reference</p>
+        <p>#(ref_comp)<br />!#ausgaben_ref_comp</p>
+        <p>!#element_fid</p>
+        <!--##show-->
+        <fieldset>
+            <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />
+            <div class="clearer">&nbsp;</div>
+            <input type="submit" name="send[]" value="g(send)" class="first" />
+            <!--##hide-zip-->
+            <input type="button" name="abort" value="g(extract)" onclick="anzeigen(['extract_edit','file_edit']);" class="next" />
+            <!--##show-->
+            <!--##hide-add-->
+            <input type="submit" name="continue[]" value="#(continue)" class="next" />
+            <!--##show-->
+            <input type="reset" name="reset" value="g(reset)" onclick="resetForm()" class="next" />
+            <input type="submit" name="abort[]" value="g(abort)" class="next" />
+            <div class="clearer">&nbsp;</div>
+        </fieldset>
+    </div>
+
+    <!--##hide-zip-->
+    <div id="extract_edit" style="!#ausgaben_style_extract_edit;">
+        #(zip)
+        <div class="clearer">&nbsp;</div>
+        <fieldset class="cbra">
+            <ul>
+                <!--##loop-zip-->
+                <li>!{path}</li>
+                <!--##cont-->
+            </ul>
+        </fieldset>
+        <fieldset class="">
+            <input type="checkbox" name="selection" value="-1" class="first" /><span style="display:block;padding:5px 0 0 10px">#(bundle_zip)</span>
+        </fieldset>
+        #(zip_stdval)
+        <fieldset class="float">
+            <label class="small">
+                #(fdesc)<textarea class="" name="zip_fdesc" rows="" cols="40"></textarea>
+            </label>
+            <label class="small">
+                #(funder)<input class="" type="text" value="" name="zip_funder" />
+            </label>
+            <label class="small">
+                #(fhit)<input class="" type="text" value="" name="zip_fhit" />
+            </label>
+            <div class="clearer">&nbsp;</div>
+        </fieldset>
+        <fieldset>
+            <input type="submit" name="extract[]" value="g(send)" class="first" />
+            <input type="button" name="abort" value="#(toggle_zip)" onclick="anzeigen(['extract_edit','file_edit']);" class="next" style="width:auto;" />
+            <input type="submit" name="abort[]" value="g(abort)" class="next" />
+            <div class="clearer">&nbsp;</div>
+        </fieldset>
+        <p>#(hinweis)</p>
+    </div>
+    <!--##show-->
+
+    <div class="clearer">&nbsp;</div>
+    <p>!#ausgaben_output</p>
+    <p>!#ausgaben_inaccessible</p>
+</form>
+<!--##end-->
+</body>
+</html>

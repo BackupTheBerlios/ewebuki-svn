@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<title>leer.modify</title>
+<link rel="stylesheet" href="../../css/default/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/default/eed.css" type="text/css" media="screen" />
+</head>
+<body>
+<!--##begin-->
+<!--$Id: -1468826685.modify.tem.html 789 2007-09-14 12:14:02Z chaot $-->
+<h1>!#ausgaben_url</h1>
+<div id="substance" style="width:100%;">
+!#ausgaben_diff
+</div>
+<form method="post" action="!#ausgaben_form_aktion" id="eEd">
+    <p>#(inhalt)</p>
+    <p>!#ausgaben_form_error</p>
+    <fieldset class="cbra">
+        <ul>
+            <li>Versionen</li>
+    <!--##loop-list-->
+            <li style="clear:both">
+                <a href="!{current}" style="float:left;text-decoration:none;visibility:!{visible_current}">(Aktuell)</a>
+                <a href="!{previous}" style="float:left;text-decoration:none;visibility:!{visible_previous}">&nbsp(Vorherige)</a>
+                <input id =o!{cb1} type="radio" name="old" value="!{cb1}" onclick="make_hidden(!{cb1},'old',!{max_id},!{rows})" !{selected_old} style="visibility: !{visible_old}" />
+                <input id =n!{cb1} type="radio" name="new" value="!{cb2}" onclick="make_hidden(!{cb1},'new',!{max_id},!{rows})" !{selected_new} style="visibility: !{visible_new}" />
+                <a href="!{url}">!{date}</a> !{name}
+            </li>
+    <!--##cont-->
+        </ul>
+        <div style="float:left">#(gesamt) !#ausgaben_gesamt</div><div style="float:right">!#ausgaben_inhalt_selector</div>
+<!--        <input type="hidden" name="form_referer" value="!#ausgaben_form_referer" class="hidden" />-->
+        <div class="clearer">&nbsp;</div>
+        <input type="submit" name="send[]" value="g(send)" class="first" />
+<!--        <input type="reset" name="reset" value="g(reset)" class="next" />-->
+<!--        <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />-->
+        <div class="clearer">&nbsp;</div>
+    </fieldset>
+    <p>!#ausgaben_output</p>
+    <p>!#ausgaben_inaccessible</p>
+</form>
+<script type="text/javascript">
+    function make_hidden(id,art,max,inh_sel) {
+        if (document.getElementById('n0')){
+            halt=0;
+        } else {
+            halt=1;
+        }
+        counter='';
+        if (art=='old') {
+            id=id+1
+            for(var i=max; i>=halt ;i--) {
+                if (counter==inh_sel) break;
+                counter++;
+                if (i>=id) {
+                    document.getElementById('n'+i).style.visibility = "visible"
+                    continue;
+                }
+                if (i<=id) {
+                   document.getElementById('n'+i).style.visibility = "hidden"
+                    continue;
+                }
+            }
+        }
+        if (art=='new') {
+            id=id-1
+            for(var i=max; i>=halt ;i--) {
+                if (counter==inh_sel) break;
+                counter++;
+                if (i<=id) {
+                    document.getElementById('o'+i).style.visibility = "visible"
+                    continue;
+                }
+                if (i>=id) {
+                   document.getElementById('o'+i).style.visibility = "hidden"
+                   continue;
+                }
+
+            }
+        }
+
+    }
+    make_hidden(!#ausgaben_old_sel_id,'old',!#ausgaben_gesamt,!#ausgaben_rows);
+    make_hidden(!#ausgaben_new_sel_id,'new',!#ausgaben_gesamt,!#ausgaben_rows);
+</script>
+<!--##end-->
+</body>
+</html>

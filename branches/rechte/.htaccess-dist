@@ -1,0 +1,32 @@
+# don't forget to load mod_rewrite in apache-config!
+# $Id$
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  #RewriteBase /
+
+  # unbedingt benötigte ausnahmen
+  RewriteRule ^basic.* - [L] 			
+  RewriteRule ^conf.* - [L] 			
+  RewriteRule ^css.* - [L] 			
+  RewriteRule ^file/archiv/.* - [L]
+  RewriteRule ^file/document/.* - [L]
+  RewriteRule ^file/new/.* - [L]
+  RewriteRule ^file/picture/.* - [L]
+  RewriteRule ^file.* ./basic/wrapper.php [L] [T=application/x-httpd-php]
+  RewriteRule ^images.* - [L] 			
+  RewriteRule ^js.* - [L] 			
+  RewriteRule ^modules.* - [L] 			
+  RewriteRule ^templates.* - [L] 			
+  
+  RewriteRule ^robots.txt - [L] 			
+  
+  # zusaetzliche eigene ausnahmen
+  #RewriteRule ^my.* - [L] 			
+
+  # entweder aufruf über index.php
+  #RewriteRule ^index.php - [L]
+  #RewriteRule ^.+ basic/main.php [T=application/x-httpd-php]
+
+  # oder betrieb ohne index.php
+  RewriteRule ^.* ./basic/main.php [T=application/x-httpd-php]
+</IfModule>

@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
+<title>usered.modify</title>
+<link rel="stylesheet" href="../../css/default/screen.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../../css/default/eed.css" type="text/css" media="screen" />
+</head>
+<body>
+<!--##begin-->
+<!--$Id$-->
+<script type="text/javascript">
+<!--
+  function resetForm(){
+     document.forms[0].reset();
+  }
+//-->
+</script>
+<form method="post" action="!#ausgaben_form_aktion" id="eEd">
+    <h1>#(ueberschrift)</h1>
+    <p>#(inhalt)</p>
+    <p>!#ausgaben_form_error</p>
+    <fieldset class="float">
+        <label for="vorname">#(vorname)
+            !#element_vorname
+        </label>
+        <label for="nachname">#(nachname)
+            !#element_nachname
+        </label>
+        <label for="username">#(username)
+            !#element_username
+        </label>
+        <label for="email">#(email)
+            !#element_email
+        </label>
+        <label for="newpass">#(newpass)
+            !#element_newpass
+        </label>
+        <label for="chkpass">#(chkpass)
+            !#element_chkpass
+        </label>
+        <label>#(actual)
+            <select name="actual[]" size="10" multiple="multiple">
+                <!--##loop-actual-->
+                <option value="!{id}"!{sel}>!{level}</option>
+                <!--##cont-->
+            </select>
+            <input type="submit" name="del[]" value="#(del)" />
+        </label>
+        <label>#(avail)
+            <select name="avail[]" size="10" multiple="multiple">
+                <!--##loop-avail-->
+                <option value="!{id}"!{sel}>!{level}</option>
+                <!--##cont-->
+            </select>
+            <input type="submit" name="add[]" value="#(add)" />
+        </label>
+    </fieldset>
+    <fieldset>
+        <input name="form_referer" type="hidden" value="!#ausgaben_form_referer" class="hidden" />
+        <input type="submit" name="send[]" value="g(send)" class="first" />
+        <input type="reset" name="reset" value="g(reset)" onclick="resetForm()" class="next" />
+        <input type="button" name="abort" value="g(abort)" onclick="location='!#ausgaben_form_break'" class="next" />
+        <div class="clearer">&nbsp;</div>
+    </fieldset>
+    <p>!#ausgaben_output</p>
+    <p>!#ausgaben_inaccessible</p>
+</form>
+<!--##end-->
+<p>
+    <a href="http://validator.w3.org/check?uri=referer">
+        <img src="http://www.w3.org/Icons/valid-xhtml10-blue" alt="Valid XHTML 1.0 Strict" height="31" width="88" />
+    </a>
+</p>
+</body>
+</html>

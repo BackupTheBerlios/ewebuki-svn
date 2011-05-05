@@ -1,0 +1,746 @@
+================================================================================
+eWeBuKi changelog
+
+weitere infos im svn
+http://svn.berlios.de/wsvn/ewebuki/trunk/basement/
+
+$Id$
+================================================================================
+
+--- v?.?.?-???? - ??. mon year num
+
+--- 14. April 2011
+
+der selection-tag wurde erweitert, man kann nun Galerien "on the fly" erzeugen,
+das hei�t, nur durch Angabe der Bild-IDs im SEL-Tag werden Galerien
+gebaut.
+Vorsicht: hierzu muss die filed2.cfg aktualisiert werden:
+beim delete-script muss nun die funktion "compilation_list" geladen werden.
+
+--- 28. Januar 2010
+
+mit einfuehrung des prived wurde die tabelle auth_priv angepasst:
+pid wurde auto_increment und auf des feld priv wurde ein schluessel gelegt,
+um das anlegen gleicher rechte zu verhindern
+
+ALTER TABLE auth_priv CHANGE `pid` `pid` INT( 11 ) NOT NULL AUTO_INCREMENT;
+ALTER TABLE auth_priv ADD UNIQUE KEY `priv` (`priv`);
+
+--- 17. November 2009
+
+der tag der bei bildern eingef�gt wird, ist nun �ber
+$cfg["contented"]["image_tag"] in der contented.cfg.php einstellbar
+
+es werden dann die unter $cfg["contented"]["tags"]["img/imgb"] gemachten
+einstellungen verwendet.
+
+die dateien function_filelist.inc.php und -141347382.modify.js-nextgen.tem.html
+wurden angepasst. ein default "img" in function_filelist.inc.php sorgt fuer
+kompatibilitaet.
+
+ein deprecated hinweis in der overwrite.cfg.php-dist weisst aus die neue
+moeglichkeit hin.
+
+
+--- 11. November 2009
+
+den kompletten edit haken in die overwrite.cfg.php
+( $defaults["cms-tag"]["link"] ) ausgelagert um ihn
+besser konfigurieren zu k�nnen.
+
+
+--- 02. November 2009
+
+Dateien koennen jetzt fuer zur bearbeitung freigegeben werden.
+Dazu muss die Tabelle site_file mit einer neuen Spalte des Typs "varchar"
+ergaenzt werden, in der die IDs berechtigten Gruppen durch Doppelpunkt getrennt
+gespeichert werden koennen.
+
+Der Name dieser Spalte wird in die Variablen
+$cfg["fileed"]["db"]["file"]["grant_grp"] geschrieben.
+
+So kann man festlegen, ob eine Datei von allen, nur vom Eigentuemer oder von
+Mitgliedern von bestimmten Gruppen bearbeitet und geloescht werden.
+
+Aufbau des Spalteninhalts:  - leer:  urspruengliches Verhalten (nur Eigentuemer kann Datei bearbeiten)
+                            -   -1:  jeder kann die Datei bearbeiten
+                            -  1:2:  Mitglieder der Gruppen mit den IDs 1 und 2 kann die Datei bearbeiten
+
+Zusaetzlich kann man in der Variablen $cfg["fileed"]["su_groups"] festlegen,
+welche Gruppen generell alle Dateien bearbeiten koennen.
+
+$cfg["fileed"]["su_groups"] ist ein Array und hat die Gruppen-IDs als Elemente.
+
+$cfg["fileed"]["su_groups"] zieht nur, wenn auch
+ $cfg["fileed"]["db"]["file"]["grant_grp"] gesetzt ist.
+
+
+--- 04. Januar 2009
+
+Im FileEd-Edit/Add kann nun festgelegt werden, dass bestimmte Werte im fhit-Feld nicht angezeigt und nicht eingefuegt werden kann.
+Diese gesperrten Eintraege werden dann automatisch vom System wieder angefuegt.
+
+Dazu gibt es zwei neue Eintraege in der config:
+$cfg["fileed"]["dummy_regex"]: Array mit Regex-Werten. Diese Muster werden gesperrt/ausgeblendet
+                               z.B.: array("#p[0-9]+,[0-9]+#"): dieses sperrt die Gruppierungsangaben
+$cfg["fileed"]["no_dummy"]:    Rechteangabe; für diese Rechte wird die herkoemmliche, nicht bereinigte/gesperrte Variante verwendet
+
+
+--- 09. Dezember 2008
+sql-eintraege für die schlagwoerter:
+CREATE TABLE IF NOT EXISTS `site_keyword` (
+  `kid` bigint(20) unsigned NOT NULL auto_increment,
+  `tname` varchar(40) NOT NULL,
+  `ebene` text NOT NULL,
+  `kategorie` text NOT NULL,
+  `lang` varchar(5) NOT NULL,
+  `word` varchar(100) NOT NULL,
+  PRIMARY KEY  (`kid`),
+  UNIQUE KEY `kid` (`kid`)
+);
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'keywords', 'base', 1, '', '', '-1', '0', 'Schlagwörter', '2008-12-08 15:12:05', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'rel_pages', 'base', 1, '', '', '-1', '0', 'ähnliche Seiten', '2008-12-08 15:09:53', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'add_keywords', 'global', 1, '', '', '-1', '0', 'Verschlagworten', '2008-12-08 15:09:53', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'all_keywords', 'keyworded.list', 1, '/keywords', 'list', '-1', '0', 'alle Schlagwörter', '2008-12-08 14:18:43', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'ueberschrift', 'keyworded.list', 1, '/keywords', 'list', '-1', '0', 'Schlagwörter', '2008-12-08 14:18:54', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'pages', 'keyworded.list', 1, '/keywords', 'list', '-1', '0', 'gefundende Seiten', '2008-12-08 14:19:44', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'edit_page', 'keyworded.list', 1, '/keywords', 'list', '-1', '0', 'Schlagwörter der Seite bearbeiten', '2008-12-09 10:26:10', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'edit_keyword', 'keyworded.list', 1, '/keywords', 'list', '-1', '0', 'Schlagwort umbenennen', '2008-12-09 10:27:31', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'ueberschrift', 'keyworded.edit_page', 1, '/keywords', 'edit_page', '-1', '0', 'Seite verschlagworten', '2008-12-08 15:16:21', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'url', 'keyworded.edit_page', 1, '/keywords', 'edit_page', '-1', '0', 'Pfad', '2008-12-08 15:16:29', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'keyword', 'keyworded.edit_page', 1, '/keywords', 'edit_page', '-1', '0', 'Schlagwörter', '2008-12-08 15:16:37', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'error_right', 'keyworded.edit_page', 1, '/keywords', 'edit_page', '-1', '0', 'Sie sind nicht berechtigt, diese Seite zu verschlagworten!', '2008-12-09 08:43:23', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'ueberschrift', 'keyworded.rename_tag', 1, '/keywords', 'rename_tag', '-1', '0', 'Schlagwort umbenennen', '2008-12-08 15:20:41', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'old_keyword', 'keyworded.rename_tag', 1, '/keywords', 'rename_tag', '-1', '0', 'Altes Schlagwort', '2008-12-08 15:20:52', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `version`, `ebene`, `kategorie`, `crc32`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES('de', 'new_keyword', 'keyworded.rename_tag', 1, '/keywords', 'rename_tag', '-1', '0', 'Neues Schlagwort', '2008-12-08 15:21:03', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_form` (`flabel`, `ftname`, `fsize`, `fclass`, `fstyle`, `foption`, `frequired`, `fcheck`) VALUES ('new_keyword', '1950102507.rename_tag', '0', '', '', NULL, '-1', '');
+
+
+--- 05. Juni 2008
+
+Anscheinend fehlten beim fileed-add Inhalte der Marken in dem Zip-Entpack-Bereich:
+
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `ebene`, `kategorie`, `crc32`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`)
+VALUES ( 'de', 'zip', '-939795212.modify', '/admin/fileed', 'add', '-1', '[H1]Archiv-Inhalt[/H1]\r\n[P]Das Archiv enthält folgende Dateien:[/P]', '0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `ebene`, `kategorie`, `crc32`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`)
+VALUES ( 'de', 'zip_stdval', '-939795212.modify', '/admin/fileed', 'add', '-1', '[H2]Standardwerte für die entpackten Dateien[/H2]', '0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `ebene`, `kategorie`, `crc32`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`)
+VALUES ( 'de', 'bundle_zip', '-939795212.modify', '/admin/fileed', 'add', '-1', 'Dateien zu einer Gruppe zusammenfassen', '0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `ebene`, `kategorie`, `crc32`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`)
+VALUES ( 'de', 'continue', '-939795212.modify', '/admin/fileed', 'add', '-1', 'Überspringen', '0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+INSERT INTO `site_text` (`lang`, `label`, `tname`, `ebene`, `kategorie`, `crc32`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`)
+VALUES ( 'de', 'extract', 'global', '', '', '-1', 'Entpacken', '0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+
+
+--- 27. Februar 2008
+
+ACHTUNG: Neue Spalte ist erforderlich!
+
+Vergebene Rechte koennen jetzt in tiefer liegenden Menupunkten wieder aufgehoben werden,
+hierzu muss die Tabelle "auth_content" um eine Spalte erweitert werden:
+
+sql fuer mysql:
+
+ALTER TABLE `auth_content` ADD `neg` ENUM( '-1','' ) DEFAULT '' AFTER `pid`;
+
+sql fuer postgres:
+
+ALTER TABLE auth_content ADD neg character varying(2) DEFAULT '';
+ALTER TABLE auth_content ADD CONSTRAINT auth_content_neg_check CHECK ((((neg)::text = (-1)::text) OR ((neg)::text = ''::text)));
+
+
+--- 21. Februar 2008
+
+Beim Link-Tag kann jetzt ein zusaetzliches attribut "title" hinzugefuegt werden:
+[LINK=url;target;titel]bezeichnung[/LINK]
+Beispiel:
+[LINK=http://www.google.de;_blank;Link zu Google]Eine Suchmaschine[/LINK]
+
+
+--- 01. Februar 2008
+
+die "authInPlace" tools werden jetzt mit dataloop eingebunden.
+das tool "history" wurde hinzugefuegt, um es sichtbar zu machen bitte unten
+angefuegten sql ausf�hren!
+
+sql:
+
+INSERT INTO `site_text`
+(`lang`, `label`, `tname`, `ebene`, `kategorie`, `crc32`, `content`,
+`changed`, `bysurname`, `byforename`, `byemail`, `byalias`)
+VALUES
+( 'de', 'history', 'global', '', 'auth', '-1', 'Historie',
+'0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+
+
+--- 21. Januar 2008
+
+In der $cfg["file"] kann man jetzt breite und hoehe der zielgroessen angeben:
+z.B.:
+$cfg["file"]["size"]["tn"] = 96;            => Breite und Hoehe der Thumbnails 96px
+$cfg["file"]["size"]["tn"] = 96:60;         => Breite: 96px, Hoehe: 60px
+
+Standardm�ssig wird das bild so verkleinert bzw. vergroessert dass es in die angegebene Breite und Hoehe passt.
+Soll das Bild so zugeschnitten werden, dass es die festgelegte Breite und Hoehe kompett ausfuellt kann man die
+$cfg["file"]["size"]-Variable um den Schalter "crop" ergaenzen.
+z.B.:
+$cfg["file"]["size"]["tn"] = 96:60:crop;    => Thumbnail hat 96:60 Pixel ohne weisse Raender
+
+
+--- 20. November 2007
+
+login auf hidedata umgebaut
+
+sql:
+
+UPDATE `site_text` SET `tname` = 'auth'
+WHERE `lang` = 'de' AND `tname` LIKE 'auth%';
+
+INSERT INTO `site_text`
+(`lang`, `label`, `tname`, `ebene`, `kategorie`, `crc32`, `content`,
+`changed`, `bysurname`, `byforename`, `byemail`, `byalias`)
+VALUES
+( 'de', 'secret', 'auth', '', 'auth', '-1', 'Hintereingang',
+'0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki'),
+( 'de', 'grouped', 'auth', '', 'auth', '-1', 'Gruppen-Editor',
+'0000-00-00 00:00:00', 'Doe', 'John', 'john.doe@ewebuki.de', 'ewebuki');
+
+
+--- 20. November 2007
+
+aufgrund der anpassungen am leveled bzw. usered wird das feld rid nicht mehr
+benoetigt, ein neuer index auf uid, lid ersetzt dessen funktion.
+
+ausserdem benoetigt der zukuenftige grouped zwei neue tabellen.
+fuer das zukuenftige rechte-konzept wurden zwei weitere tabellen erstellt
+
+sql:
+
+ALTER TABLE `auth_right` DROP `rid`;
+ALTER TABLE `auth_right` ADD PRIMARY KEY (`uid`,`lid`);
+
+CREATE TABLE `auth_group` (
+  `gid` int(11) NOT NULL auto_increment,
+  `ggroup` varchar(30) NOT NULL,
+  `beschreibung` text NOT NULL,
+  PRIMARY KEY  (`gid`)
+) ENGINE=MyISAM AUTO_INCREMENT=0;
+
+CREATE TABLE `auth_member` (
+  `uid` int(11) NOT NULL,
+  `gid` int(11) NOT NULL,
+  PRIMARY KEY  (`uid`,`gid`)
+) ENGINE=MyISAM;
+
+CREATE TABLE `auth_content` (
+  `uid` int(11) NOT NULL,
+  `gid` int(11) NOT NULL,
+  `pid` int(11) NOT NULL,
+  `db` varchar(20) NOT NULL,
+  `tname` varchar(50) NOT NULL,
+  `ebene` text NOT NULL,
+  `kategorie` text NOT NULL,
+  PRIMARY KEY  (`uid`,`gid`,`pid`,`db`,`tname`)
+) ENGINE=MyISAM;
+
+CREATE TABLE `auth_priv` (
+  `pid` int(11) NOT NULL,
+  `priv` varchar(20) NOT NULL,
+  PRIMARY KEY  (`pid`)
+) ENGINE=MyISAM AUTO_INCREMENT=0;
+
+
+--- 12. November 2007
+
+ACHTUNG! - um in zukunft eine versionierung des content zu ermoeglichen
+mussten die tabellen geaendert werden!
+
+ein preview der versionierung ist vorerst nur in der entwickler version
+verfuegbar!
+
+sql:
+
+ALTER TABLE `site_text` DROP `crc32`;
+ALTER TABLE `site_text` ADD `version` INT(11) NOT NULL AFTER `tname`;
+ALTER TABLE `site_text` ADD `crc32` ENUM('-1', '0') NOT NULL DEFAULT '-1' AFTER `kategorie`;
+ALTER TABLE `site_text` DROP PRIMARY KEY, ADD PRIMARY KEY (`lang`,`label`,`tname`,`version`);
+
+CREATE TABLE IF NOT EXISTS `site_lock` (
+  `lang` varchar(5) NOT NULL,
+  `label` varchar(20) NOT NULL,
+  `tname` varchar(40) NOT NULL,
+  `byalias` varchar(20) NOT NULL,
+  `lockat` datetime NOT NULL,
+  PRIMARY KEY  (`lang`,`label`,`tname`)
+) ENGINE=MyISAM;
+
+
+--- 26. september 2007
+
+es ist nun moeglich, dass sich mehrere funktionen eine lib teilen.
+als ablage dient das neue verzeichnis "modules/libraries"
+
+durch den eintrag im function array "kategorie,shared"
+wird die lib aus "modules/libraries" geladen
+
+ein eintrag "kategorie,global"
+laedt die lib aus "basic/libraries"
+
+im gegensatz zu den private functions enthaelt
+eine datei nur eine funktion!
+
+(beispiele siehe modules/leer.cfg.php)
+
+
+--- 14. september 2007 01
+
+eWeBuKi hat ein neues default design
+
+aus "default" wird "historic"
+aus "stylesheet" wird "default"
+
+um die *ed mit css informationen zu versorgen, einfach den eed.css
+aus default ins eigene design css verzeichnis kopieren und diese
+datei einbinden. je nach design ist es n�tig, die alien section
+im eed.css teiweise oder ganz zu verwenden.
+
+
+--- 05. august 2007 02
+
+neue tags:
+
+[E]    - innhalb dieses tag wird eWeBuKi code nicht interpretiert
+[M0]   - eintraege im menu oberhalb
+[PREV] - eintrag im menu vorher
+[NEXT] - eintrag im menu nachher
+
+
+--- 05. august 2007 01
+
+ACHTUNG! -> struktur aenderungen: addon.cfg umbenannt,
+menu.inc + cfg verschoben, kekse.inc + cfg verschoben/umbenannt
+
+$pathvars["addonroot"] -> $pathvars["moduleroot"]
+
+unbedingt alle customer scripte auf $pathvars["addonroot"]
+pruefen!!! - den alten wert gibt es nicht mehr.
+
+
+addon.cfg.php-dist -> module.cfg.php-dist
+basic/libraries/menu.inc.php -> modules/basic/menu.inc.php
+basic/libraries/kekse.inc.php -> modules/basic/path.inc.php
+
+conf/menu.cfg.php-dist -> modules/basic/menu.cfg.php-dist
+conf/kekse.cfg.php-dist -> modules/basic/path.cfg.php-dist
+
+befehle:
+
+cp -a conf/modules.cfg.php-dist conf/modules.cfg.php
+cp -a modules/basic/path.cfg.php-dist modules/basic/path.cfg.php
+
+mv conf/menu.cfg.php modules/basic/menu.cfg.php
+mv conf/kekse.cfg.php modules/basic/path.cfg.php
+
+sonstiges:
+
+erweitern der conf/modules.cfg.php um eigene module.
+siehe conv/addon.cfg.php - dannach conv/addon.cfg.php loeschen
+
+
+--- 28. juli 2007
+
+neues design stylesheet, welches demnaechst default ersetzt. um es
+schon vorab zu verwenden, einfach "stylesheet" als ["default_design"]
+in sie site.cfg.php eintragen. damit auch das menu mitspielt,
+menu.cfg.php auf generate stellen und die kommentar zeilen vor link1
+und link2 in der ersten ebene entfernen.
+
+
+--- 26. juli 2007
+
+achtung unbedingt menued aktualisieren! wird der entry mit
+gro�buchstaben ergaenzt/geaendert und enthaelt site_form keinen
+eintrag der das verhindert, wird der content nicht mehr gefunden.
+
+die neue version verhindert das und filtert grundsaetzlich mit
+/[^A-Za-z_\-\.0-9]/. will man die zeichen noch weiter einschraenken ist
+mit folgenden fcheck eintraegen m�glich:
+
+-> z.B. PREG:^[a-z_\-\.0-9]+$
+
+sql:
+
+INSERT INTO `site_form` (`flabel`, `ftname`, `fsize`, `frequired`, `fcheck`)
+ VALUES ('entry', '-555504947.add', '0', '-1', 'PREG:^[a-z_\\-\\.0-9]+$');
+INSERT INTO `site_form_lang` (`flid`, `fid`, `flang`, `fchkerror`)
+ VALUES (LAST_INSERT_ID(), LAST_INSERT_ID(), 'de', 'Ung�ltige Zeichen im Feld Eintrag.');
+
+INSERT INTO `site_form` (`flabel`, `ftname`, `fsize`, `frequired`, `fcheck`)
+ VALUES ('entry', '-555504947.edit', '0', '-1', 'PREG:^[a-z_\\-\\.0-9]+$');
+INSERT INTO `site_form_lang` (`flid`, `fid`, `flang`, `fchkerror`)
+ VALUES (LAST_INSERT_ID(), LAST_INSERT_ID(), 'de', 'Ung�ltige Zeichen im Feld Eintrag.');
+
+
+--- 24. juli 2007
+
+das css verzeichnis enthaelt jetzt ebenfalls unterordner mit den
+design namen. es wird empfohlen die dateien zu verschieben!
+
+das dynamic css handling funtioniert nur noch in diesen
+unterverzeichnissen. neu: alle *_default.css werden nun mit den
+werten aus dynamic css erg�nzt.
+
+es gibt ein js verzeichnis f�r javascript dateien, welches auch
+desigen unterordner enth�lt.
+
+
+--- 17. mai 2007
+
+jetzt funtioniert !#lnk_0, !#ausgaben_UP auch auf der startseite.
+bei diesem fix habe ich auch gleich die kekse.inc.php umgebaut.
+
+achtung: eine neue kekse.cfg.php(-dist) wird ben�tigt!
+
+
+das ewebuki menu funktioniert nun auch wenn https verwendet wird.
+(global.inc.php, main.php angepasst)
+
+
+--- 29. mar 2007
+
+ewebuki teilt jetzt den hauptbereich (default = inhalt) einer seite in sektionen.
+ein tag (default = [H) dient dabei als Trenner. laestiges scrollen bei
+viel content auf einer seite ist damit nicht mehr noetig. marke und tag sind
+natuerlich einstellbar siehe: site.cfg.php, overwrite.cfg.php
+
+
+--- 20. okt 2006
+
+ewebuki findet sein subdir jetzt anhand einer environment variable
+der parameter $specialvars["subdir"] in der site.cfg.php wird ignoriert.
+
+
+--- 06. okt 2006
+
+fileed: beschr�nkung von l�schen und bearbeiten auf userid ist einstellbar.
+(siehe restrict in der konfig datei)
+
+fileed: vor dem l�schen von dateien wird der content gepr�ft.
+(noch nicht multi db f�hig)
+
+neue label sind notwendig
+
+sql:
+
+INSERT INTO `site_text` (`lang`, `label`, `crc32`, `tname`, `ebene`, `kategorie`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES ('de', 'error1', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Bild wird bereits verwendet - Bearbeiten zeigt wo.', '2006-10-06 20:07:05', '', '', '', 'ewebuki'),
+('de', 'error2', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Bild kann nur vom Eigent�mer gel�scht werden.', '2006-10-06 20:22:05', '', '', '', 'ewebuki'),
+('de', 'error_edit', '-1', '-939795212.modify', '/admin/fileed', 'edit', '0', 'Bild kann nur vom Eigent�mer bearbeitet werden.', '2006-10-06 20:44:19', '', '', '', 'ewebuki'),
+('de', 'references', '-1', '-939795212.modify', '/admin/fileed', 'edit', '0', 'Ist enthalten in:', '2006-10-06 19:59:07', '', '', '', 'ewebuki');
+
+
+--- 26. sep 2006
+
+fileed list hat release status erreicht
+
+hier die neuen marken
+
+sql:
+
+INSERT INTO `site_text` (`lang`, `label`, `crc32`, `tname`, `ebene`, `kategorie`, `html`, `content`, `changed`, `bysurname`, `byforename`, `byemail`, `byalias`) VALUES ('de', 'answera', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Ihre Schnellsuche nach', '2006-09-26 12:18:44', '', '', '', 'ewebuki'),
+('de', 'answerb', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'hat', '2006-09-26 12:18:58', '', '', '', 'ewebuki'),
+('de', 'answerc_no', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'keine Eintr�ge gefunden.', '2006-09-26 12:19:42', '', '', '', 'ewebuki'),
+('de', 'answerc_yes', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'folgende Eintr�ge gefunden.', '2006-09-26 12:20:01', '', '', '', 'ewebuki'),
+('de', 'next', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Vorherige Seite', '2006-09-26 12:22:25', '', '', '', 'ewebuki'),
+('de', 'prev', '-1', '-939795212.list', '/admin/fileed', 'list', '0', 'Nexte Seite', '2006-09-26 12:22:35', '', '', '', 'ewebuki');
+
+
+--- 21. sep 2006
+
+neu struktur $_SESSION[] array:
+
+$_SESSION["images_memo"]  wird zu   $SESSION["file_memo"]
+
+$_SESSION["return"]       wird zu   $SESSION["cms_last_edit"]
+$_SESSION["referer"]      wird zu   $SESSION["cms_last_referer"]
+
+
+neue label bezeichnungen:
+
+sql:
+
+UPDATE `site_text` SET `ebene` = '/admin/fileed', `kategorie` = 'list' WHERE `lang` = 'de' AND `tname` = '-939795212.list';
+
+UPDATE `site_text` SET `label` = 'cmslink' WHERE `lang` = 'de' AND `label` = 'send_image' AND `tname` = '-939795212.list' LIMIT 1;
+
+UPDATE `site_text` SET `label` = 'fileedit' WHERE `lang` = 'de' AND `label` = 'describe' AND `tname` = '-939795212.list' LIMIT 1;
+UPDATE `site_text` SET `label` = 'filedelete' WHERE `lang` = 'de' AND `label` = 'delete1' AND `tname` = '-939795212.list' LIMIT 1;
+DELETE FROM `site_text` WHERE `lang` = 'de' AND `label` = 'delete2' AND `tname` = '-939795212.list' LIMIT 1;
+
+templates aktualisieren!
+
+
+--- 20. sep 2006
+
+session_register(), $_SESSION umbau
+
+
+--- 18. sep 2006
+
+subdir support endlich komplett
+
+
+--- 14. sep 2006
+
+warnung: fileed komplett �berarbeitet!
+
+cfg, files, templates und db haben sich ge�ndert
+
+-- geloescht werden kann
+
+templates/default ->
+ -939795212.describe.tem.html (heisst jetzt richtig: -939795212.modify.tem.html)
+
+ -939795212.list-head.tem.html (hidedata, dataloop)
+ -939795212.list-foot.tem.html (hidedata, dataloop)
+
+modules/admin ->
+ fileed-preview.inc.php (der neue globale preview wird benutzt)
+ fileed-describe.inc.php (fileed-add.inc.php, fileed-edit.inc.php)
+ fileed-note.inc.php (keine ahnung was das tat)
+ fileed-select.inc.php (sinnlos, jetzt teil von fileed-upload.inc.php)
+
+-- datenbank aenderungen
+
+sql:
+
+beschreibung wird zum text file ->
+ALTER TABLE `site_file` CHANGE `fdesc` `fdesc` TEXT NOT NULL;
+
+felder breite einstellen ->
+INSERT INTO `site_form` (`fid`, `flabel`, `ftname`, `fsize`, `fclass`, `fstyle`, `foption`, `frequired`, `fcheck`) VALUES (NULL, 'fdesc', '-939795212.modify', '25', '', '', NULL, '0', '');
+INSERT INTO `site_form` (`fid`, `flabel`, `ftname`, `fsize`, `fclass`, `fstyle`, `foption`, `frequired`, `fcheck`) VALUES (NULL, 'funder', '-939795212.modify', '30', '', '', NULL, '0', '');
+INSERT INTO `site_form` (`fid`, `flabel`, `ftname`, `fsize`, `fclass`, `fstyle`, `foption`, `frequired`, `fcheck`) VALUES (NULL, 'fhit', '-939795212.modify', '30', '', '', NULL, '0', '');
+
+erlaubte file typen erweitern ->
+ALTER TABLE `site_file` CHANGE `ffart` `ffart` ENUM( 'gif', 'jpg', 'png', 'pdf', 'zip', 'odt', 'ods', 'odp', 'gz', 'bz2' ) NOT NULL DEFAULT 'jpg';
+
+aus describe wir modify ->
+UPDATE `site_form` SET `ftname` = '-939795212.modify' WHERE `ftname` = '-939795212.describe';
+UPDATE `site_text` SET `tname` = '-939795212.modify' WHERE `tname` = '-939795212.describe';
+
+
+--- 31. jul 2006 05
+
+eingabe m�glichkeiten im menued einschr�nken
+
+case-insensitiv: ^[A-Za-z_\.\-0-9]+$ (ist default im add, edit script!)
+case-sensitiv: ^[a-z_\.\-0-9]+$
+
+sql:
+
+INSERT INTO `site_form` ( `fid` , `flabel` , `ftname` , `fsize` , `fclass` , `fstyle` , `foption` , `frequired` , `fcheck` )
+VALUES ( NULL , 'entry', '-555504947.edit', '0', '', '', NULL , '-1', 'PREG:^[a-z_\\.\\-0-9]+$' );
+INSERT INTO `site_form_lang` ( `flid` , `fid` , `flang` , `fpgenum` , `fwerte` , `ferror` , `fdberror`, `fchkerror` )
+VALUES ( LAST_INSERT_ID(), LAST_INSERT_ID(), 'de', NULL , '', '', '', 'Ung�ltige Zeichen im Feld Eintrag.' );
+
+
+--- 31. jul 2006 04
+
+datenbank feld site_form_lang  "fchkerror" varchar 255 fehlte in der master db
+
+sql:
+
+ALTER TABLE `site_form_lang` ADD `fchkerror` VARCHAR( 255 ) NOT NULL AFTER `fdberror`;
+
+
+--- 31. jul 2006 03
+
+datenbank feld site_form fcheck sollte text sein!
+
+sql:
+
+ALTER TABLE `site_form` CHANGE `fcheck` `fcheck` TEXT NOT NULL;
+
+
+--- 31. jul 2006 02
+
+neuer viewer mit bilderstrecken funktion
+
+
+--- 31. jul 2006 01
+
+unterstuetzung fuer files mit original namen
+siehe conf/file.cfg.php
+
+
+--- 27. jul 2006
+
+modules struktur geaendert
+
+mv modules modules.old
+cvs -z3 -d:pserver:anonymous@cvs.ewebuki.berlios.de:/cvsroot/ewebuki co modules
+
+customer erweiterungen neu einspielen!
+
+
+--- 26. jul 2006
+
+modules/addon/kontakt.inc.php
+modul fuer ein kontakt form
+
+
+--- 11. okt 2005
+
+subdir support - erweiterungen um ewebuki in einem webserver
+unterverzeichnis zu betreiben.
+
+
+--- 15. sep 2005
+
+um weitere ausnahmen im code zu vermeiden, habe ich den namen des
+des template mit dem grundaufabau geaendert.
+
+mv index.tem.html base.tem.html
+
+mit dieser version sind folgende update queries auf die site text
+notwendig.
+
+sql:
+
+UPDATE `site_text` set tname='base' WHERE `tname` LIKE 'index';
+UPDATE `site_text` set tname='index' WHERE `tname` LIKE 'main';
+
+ACHTUNG:
+- die reihenfolge der querys ist wichtig!
+- nicht vergessen eigene designs anzupassen!
+
+
+--- 13. sep 2005
+
+erweiterung fuer addon:changed (last changed info)
+
+sql:
+
+ALTER TABLE `site_text`
+ADD `changed` DATETIME NOT NULL ,
+ADD `bysurname` VARCHAR( 40 ) NOT NULL ,
+ADD `byforename` VARCHAR( 40 ) NOT NULL ,
+ADD `byemail` VARCHAR( 60 ) NOT NULL ,
+ADD `byalias` VARCHAR( 20 ) NOT NULL ;
+
+
+--- 18.03.2005 01
+
+speed hack: strstr() -> strpos() !== false
+
+
+--- 18.03.2005 01
+
+neue marke g(label) eine m�glichkeit ein label global zu markieren.
+z.B. bei buttons -> einmal beschriften, immer wieder verwenden.
+
+
+--- 11.03.2005
+
+dataloop und datahide
+
+das gleiche spiel wie fuer das loopen im template, gibts jetzt auch als
+verstecken und sichtbar machen. ein gefuelltes $hidedata["wert"] macht
+<!--##hide-wert--> hier <!--##show--> sichtbar. auch hier werden die
+array inhalte in die !{num} bzw !{name} eingespielt. aber im gegensatz
+zu loop nur einmal.
+
+beispiel template:
+<!--##hide-wech--> hier steht es: !{edit} <!--##show-->
+
+beispiel php code:
+$hidedata["wech"]["edit"] = $cfg["basis"]."/edit,".$data["oid"].".html";
+
+
+--- 06. nov 2004
+
+neue version der site text tabelle, macht ein update
+der texte und label zum kinderspiel.
+
+ersetze PRIMARY KEY tid durch PRIMARY KEY aus lang, label, tname
+
+sql:
+
+ALTER TABLE `site_text` DROP `tid`;
+ALTER TABLE `site_text` ADD PRIMARY KEY (`lang`,`label`,`tname`);
+ALTER TABLE `site_text` ORDER BY `lang`, `tname`, `label`;
+
+die aktuelle cms.inc.php kommt mit beiden tabellen zurecht.
+
+dateien im sql/ verzeichnis:
+
+um den original zustand der labels wiederherzustellen, einfach
+mit phpmyadmin die datei "site_text_labl.sql" importieren.
+
+wenn sie bereits eigene seiten erstellt haben, l�schen die
+naechsten befehle ihren inhalt!!!
+
+um alle original inhalt texte loszuwerden, ewebuki site_text leeren
+und mit der datei "site_text_labl.sql" neu bef�llen.
+
+die original texte kann man mit der datei "site_text_text.sql"
+wiederherstellen.
+
+
+--- 26. jul 2004
+
+aus form_defaults[class][xxxx] wird defaults[form][xxxx][class]
+
+
+--- 22. jan 2003
+
+\config\site.cfg.php
++$specialvars[composite] = 0; // composite ermoeglichen
+
+neue \incs\function.inc.php
+neue \incs\cms.inc.php
+
+
+--- default sprache geaendert
+
+ger -> de
+
+sql:
+
+update `site_text` set lang='de' WHERE lang='ger';
+update `site_menu_lang` set lang='de' WHERE lang='ger';
+update `site_form_lang` set flang='de' WHERE flang='ger';
+
+
+--- composite erweiteung
+
+neues feld 'html' enum(-1,0) in tabelle site_text
+function.inc.php, cms.inc.php changed
+cms.edit.html.tem.html new!
+cms.edit.cmstag.tem.html new!
+cms.edit.tem.html delete
+
+
+--- news erweiterung
+
+$environment[news_uebersicht_pre_len] in news eingefuegt -> config anpassen!
+
+
+--- aus enviroment wird environment !!!!
+
+addon.cfg.php
+news.cfg.php
+linking.inc.php
+index.tem.html
+
+
+--- aenderung mapping
+chaos.php
+// grundmapping main output
+if ( $enviroment[katid] != "" && $enviroment[katid] != "index" ) {
+     $mapping[main] = $enviroment[katid];
+}
+
+
+--- 02. feb 2003
+first public release
