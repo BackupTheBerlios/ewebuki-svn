@@ -497,6 +497,7 @@
            $nochk .= strstr($environment["kategorie"],$value);
         }
         if ( $nochk == "" && $count_url != $count_menu ) {
+            echo $count_menu;
             $ausgaben["404seite"] = $environment["ebene"]."/".$environment["kategorie"].".html";
             if ( $_SERVER["HTTP_REFERER"] ) {
                 $ausgaben["404referer"] = $_SERVER["HTTP_REFERER"];

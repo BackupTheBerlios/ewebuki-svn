@@ -43,8 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( priv_check("/".$cfg["grouped"]["subdir"]."/".$cfg["grouped"]["name"],$cfg["grouped"]["right"]) ||
-        priv_check_old("",$cfg["grouped"]["right"]) ) {
+    if ( $rechte[$cfg["grouped"]["right"]] == -1 ) {
 
         $hidedata["edit"]["enable"] = "on";
 

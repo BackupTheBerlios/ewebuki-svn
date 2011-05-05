@@ -43,8 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( priv_check("/".$cfg["menued"]["subdir"]."/".$cfg["menued"]["name"],$cfg["menued"]["right"]) ||
-        priv_check_old("",$cfg["menued"]["right"]) ) {
+    if ( $cfg["menued"]["right"] == "" || $rechte[$cfg["menued"]["right"]] == -1 ) {
 
         // array umdrehen
         $modify = array_reverse($cfg["menued"]["modify"]);

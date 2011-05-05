@@ -43,9 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["fileed"]["right"] == "" ||
-        priv_check("/".$cfg["fileed"]["subdir"]."/".$cfg["fileed"]["name"],$cfg["fileed"]["right"]) ||
-        priv_check_old("",$cfg["fileed"]["right"]) ) {
+    if ( $cfg["fileed"]["right"] == "" || $rechte[$cfg["fileed"]["right"]] == -1 ) {
 
         // funktions bereich ( aufbau )
         // ***

@@ -92,6 +92,7 @@
                 $right = -1;
                 $parser = -1;
             } else {
+#                echo  $level1array["level"];
                 if ( $rechte[$level1array["level"]] == -1 ) {
                     $right = -1;
                     $parser = -1;
