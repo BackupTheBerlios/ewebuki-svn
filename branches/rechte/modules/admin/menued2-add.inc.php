@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-if ( $cfg["menued"]["modify"]["add"][2] == "" || $rechte[$cfg["menued"]["modify"]["add"][2]] == -1 ) {
+if ( $cfg["menued"]["modify"]["add"][2] == "" || priv_check('', $cfg["menued"]["modify"]["add"][2] ) ) {
         // page basics
         // ***
         #if ( count($_POST) == 0 ) {

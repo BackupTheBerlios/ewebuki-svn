@@ -45,7 +45,7 @@
 
     $url = make_ebene($environment["parameter"][1]);
 
-    if ( $cfg["righted"]["right"] == "" || $rechte[$cfg["righted"]["right"]] == -1 ) {
+    if ( $cfg["righted"]["right"] == "" || priv_check('', $cfg["righted"]["right"] ) ) {
 
         // bauen der legende
         foreach ( $cfg["righted"]["button"]  as $key => $value ) {

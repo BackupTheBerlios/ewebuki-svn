@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["fileed"]["right"] == "" || $rechte[$cfg["fileed"]["right"]] == -1 ) {
+    if ( $cfg["fileed"]["right"] == "" || priv_check('', $cfg["fileed"]["right"] ) ) {
 
         // auf session losgehen, falls zip bearbeitet wurde
         if ( count($_SESSION["zip_extracted"]) == 0 ) unset($_SESSION["zip_extracted"]);

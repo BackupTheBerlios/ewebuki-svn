@@ -45,7 +45,7 @@
 
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** ".$script["name"]." ** ]".$debugging["char"];
 
-    if ( $cfg["prived"]["right"] == "" || $rechte[$cfg["prived"]["right"]] == -1 ) {
+    if ( $cfg["prived"]["right"] == "" || priv_check('', $cfg["prived"]["right"] ) ) {
 
         ////////////////////////////////////////////////////////////////////
         // achtung: bei globalen funktionen, variablen nicht zuruecksetzen!

@@ -46,7 +46,7 @@
     $kategorie2check = substr(make_ebene($environment["parameter"][1]),0,strpos(make_ebene($environment["parameter"][1]),"/"));
     $ebene2check = substr(make_ebene($environment["parameter"][1]),strpos(make_ebene($environment["parameter"][1]),"/"));
 
-    if ( $cfg["menued"]["modify"]["delete"][2] == "" || $rechte[$cfg["menued"]["modify"]["delete"][2]] == -1 ) {
+    if ( $cfg["menued"]["modify"]["delete"][2] == "" || priv_check('', $cfg["menued"]["modify"]["delete"][2] ) ) {
 
         // erst mal kucken ob leoschen eine gute idee ist?
         // ***

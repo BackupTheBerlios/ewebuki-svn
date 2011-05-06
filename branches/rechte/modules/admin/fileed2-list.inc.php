@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["fileed"]["right"] == "" || $rechte[$cfg["fileed"]["right"]] == -1 ) {
+    if ( $cfg["fileed"]["right"] == "" || priv_check('', $cfg["fileed"]["right"] ) ) {
 
         // funktions bereich ( aufbau )
         // ***

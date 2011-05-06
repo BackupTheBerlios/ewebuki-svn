@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["menued"]["right"] == "" || $rechte[$cfg["menued"]["right"]] == -1 ) {
+    if ( $cfg["menued"]["right"] == "" || priv_check('', $cfg["menued"]["right"] ) ) {
 
         // array umdrehen
         $modify = array_reverse($cfg["menued"]["modify"]);

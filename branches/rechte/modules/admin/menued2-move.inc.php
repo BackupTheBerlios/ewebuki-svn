@@ -46,7 +46,7 @@
     $kategorie2check = substr(make_ebene($environment["parameter"][2]),0,strpos(make_ebene($environment["parameter"][2]),"/"));
     $ebene2check = substr(make_ebene($environment["parameter"][2]),strpos(make_ebene($environment["parameter"][2]),"/"));
 
-    if ( $cfg["menued"]["modify"]["move"][2] == "" || $rechte[$cfg["menued"]["modify"]["move"][2]] == -1 ) {
+    if ( $cfg["menued"]["modify"]["move"][2] == "" || priv_check('', $cfg["menued"]["modify"]["move"][2] ) ) {
 
         $ausgaben["root"] = "";
         $hidedata["move"]["on"] = -1;

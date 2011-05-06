@@ -46,7 +46,7 @@
     $kategorie2check = substr(make_ebene($environment["parameter"][1]),0,strpos(make_ebene($environment["parameter"][1]),"/"));
     $ebene2check = substr(make_ebene($environment["parameter"][1]),strpos(make_ebene($environment["parameter"][1]),"/"));
 
-    if ( $cfg["menued"]["modify"]["edit"][2] == "" || $rechte[$cfg["menued"]["modify"]["edit"][2]] == -1 ) {
+    if ( $cfg["menued"]["modify"]["edit"][2] == "" || priv_check('', $cfg["menued"]["modify"]["edit"][2] ) ) {
 
         // page basics
         // ***

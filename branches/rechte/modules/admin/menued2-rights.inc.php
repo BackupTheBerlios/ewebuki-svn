@@ -46,7 +46,7 @@
     $kategorie2check = substr(make_ebene($environment["parameter"][1]),0,strpos(make_ebene($environment["parameter"][1]),"/"));
     $ebene2check = substr(make_ebene($environment["parameter"][1]),strpos(make_ebene($environment["parameter"][1]),"/"));
 
-    if ( $cfg["menued"]["modify"]["rights"][2] == "" || $rechte[$cfg["menued"]["modify"]["rights"][2]] == -1 ) {
+    if ( $cfg["menued"]["modify"]["rights"][2] == "" || priv_check('', $cfg["menued"]["modify"]["rights"][2] ) ) {
         $specialvars["dynlock"] = True;
         $sql = "SELECT * FROM ".$cfg["menued"]["db"]["menu"]["entries"]." INNER JOIN ".$cfg["menued"]["db"]["lang"]["entries"]." ON (site_menu.mid=site_menu_lang.mid) WHERE site_menu.mid = ".$environment["parameter"][1];
         $result = $db -> query($sql);

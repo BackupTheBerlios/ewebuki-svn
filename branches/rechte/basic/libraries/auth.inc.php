@@ -202,17 +202,7 @@
 
         if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "uid = ".$_SESSION["uid"].$debugging["char"];
         if ( $_SESSION["uid"] != "" ) {
-            if ( $specialvars["security"]["new"] == -1 ) {
-                $buffy_start = array_sum(explode(' ', microtime()));
-                $sql = "Select * from auth_priv";
-                $result  = $db -> query($sql);
-                while ( $row = $db -> fetch_array($result) ) {
-                    if ( priv_check($environment["ebene"]."/".$environment["kategorie"],$row["priv"])) {
-                        $rechte[$row["priv"]] = -1;
-                    }
-                }
-               echo array_sum(explode(' ', microtime())) - $buffy_start;
-            } else {
+            if ( $specialvars["security"]["new"] != -1 ) {
                 $sql = "SELECT level FROM ".$cfg["auth"]["db"]["level"]["entries"]."
                         INNER JOIN ".$cfg["auth"]["db"]["right"]["entries"]."
                         ON ".$cfg["auth"]["db"]["level"]["entries"].".".$cfg["auth"]["db"]["level"]["id"]." = ".$cfg["auth"]["db"]["right"]["entries"].".".$cfg["auth"]["db"]["right"]["levelkey"]."
@@ -260,7 +250,7 @@
 
         $hidedata["authInPlace"]["links"] = "on";
         foreach ( $cfg["auth"]["inplace"] as $key => $value ) {
-            if ( $rechte[$value[0]] == -1   ) {
+            if ( priv_check($environment["ebene"]."/".$environment["kategorie"],$value[0])   ) {
                 if ( strstr($key,"/") ){
                     $dataloop["authInPlace"][$key]["link"] = $pathvars["virtual"].$key.".html";
                 } else {
@@ -281,9 +271,7 @@
                 $label = "#(".$funktion.")";
                 $end = "<br />";
             }
-
-            $check = $rechte[$werte[1]];
-
+            $check = priv_check("/admin/".$funktion."/".$werte[0],$werte[1]);
             if ( $check == True ) {
                 $dataloop["authTools"][$funktion]["url"] = $pathvars["virtual"]."/admin/".$funktion."/".$werte[0].".html";
                 $dataloop["authTools"][$funktion]["label"] = $label;

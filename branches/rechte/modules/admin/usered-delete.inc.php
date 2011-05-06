@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $cfg["usered"]["right"] == "" || $rechte[$cfg["usered"]["right"]] == -1 ) {
+    if ( $cfg["usered"]["right"] == "" || priv_check('', $cfg["usered"]["right"] ) ) {
 
         // funktions bereich fuer erweiterungen
         // ***
