@@ -89,7 +89,7 @@
 
                 // berechtigung abfragen
                 if ( $data["level"] != "" ) {
-                    if ( $rechte[$data["level"]] != -1 ) {
+		    if ( !priv_check('',$data["level"]) ){
                         continue;
                     }
                 }
