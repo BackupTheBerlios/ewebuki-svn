@@ -47,8 +47,10 @@
     // funktion prueft rekursiv, ob die aktuelle url rechte in der $_SESSION["content"] besitzt !
 
     function priv_check($url,$required) {
+        global $cfg,$specialvars,$rechte;
         if ( !function_exists(priv_check_path) ) {
             function priv_check_path($url,$required,&$hit,&$del) {
+                global $environment;
                 if ( is_array($_SESSION["content"] ) ){
                     $array = explode(";",$required);
                     foreach ( $array as $value ) {
@@ -60,18 +62,31 @@
                         }
                     }
                 }
+                if ( $url == "" ) $url = $environment["ebene"]."/".$envrionment["kategorie"];
                 if ( $url != "/" ) {
                     $url = dirname($url);
                     priv_check_path($url,$required,$hit,$del);
                 }
             }
         }
-        $hit = "";
-        $del= array();
-        if ( $required != "" ) {
-            priv_check_path($url,$required,$hit,$del);
+        if ( $specialvars["security"]["new"] != -1 ) {
+            if ( $required == "" ) {
+                $url = dirname($url);
+                $funktion = basename($url);
+                $required = $cfg["auth"]["menu"][$funktion][1];
+            }
+            $array = explode(";",$required);
+            foreach( $array as $value) {
+                if ( $rechte[$value] == -1 ) return True;
+            }
+        } else {
+            $hit = "";
+            $del= array();
+            if ( $required != "" ) {
+                priv_check_path($url,$required,$hit,$del);
+            }
+            return $hit;
         }
-        return $hit;
     }
 
     function priv_info($url,&$hit) {
