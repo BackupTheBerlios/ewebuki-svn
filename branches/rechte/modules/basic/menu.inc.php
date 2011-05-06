@@ -92,8 +92,7 @@
                 $right = -1;
                 $parser = -1;
             } else {
-#                echo  $level1array["level"];
-                if ( $rechte[$level1array["level"]] == -1 ) {
+                if ( priv_check("/".$level1array["entry"],$level1array["level"]) ) {
                     $right = -1;
                     $parser = -1;
                 } else {
@@ -212,7 +211,7 @@
                 if ( $level2array["level"] == "" ) {
                     $right = -1;
                 } else {
-                    if ( $rechte[$level2array["level"]] == -1 ) {
+                    if ( priv_check('',$level2array["level"]) ) {
                         $right = -1;
                     } else {
                         $right = 0;
@@ -297,7 +296,7 @@
                         if ( $level3array["level"] == "" ) {
                             $right = -1;
                         } else {
-                            if ( $rechte[$level3array["level"]] == -1 ) {
+                            if ( priv_check('',$level3array["level"]) ) {
                                 $right = -1;
                             } else {
                                 $right = 0;

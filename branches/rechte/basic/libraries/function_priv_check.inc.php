@@ -51,7 +51,7 @@
         if ( !function_exists(priv_check_path) ) {
             function priv_check_path($url,$required,&$hit,&$del) {
                 global $environment;
-                if ( $url == "" ) $url = $environment["ebene"]."/".$envrionment["kategorie"];
+                if ( $url == "" ) $url = $environment["ebene"]."/".$environment["kategorie"];
                 if ( is_array($_SESSION["content"] ) ){
                     $array = explode(";",$required);
                     foreach ( $array as $value ) {
