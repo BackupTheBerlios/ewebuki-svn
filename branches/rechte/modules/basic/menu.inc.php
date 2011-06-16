@@ -92,7 +92,7 @@
                 $right = -1;
                 $parser = -1;
             } else {
-                if ( priv_check("/".$level1array["entry"],$level1array["level"]) ) {
+                if ( priv_check("",$level1array["level"]) ) {
                     $right = -1;
                     $parser = -1;
                 } else {
