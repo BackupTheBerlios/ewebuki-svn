@@ -43,7 +43,7 @@
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ( $rechte[$cfg["leveled"]["right"]] == -1 ) {
+    if ( $cfg["leveled"]["right"] == "" || priv_check('', $cfg["leveled"]["right"] ) ) {
 
         // funktions bereich fuer erweiterungen
         // ***
