@@ -202,7 +202,7 @@
             $check = "";
             if ( $specialvars["editlock"] == False && $tname != "auth" ) {
                 if ( $specialvars["security"]["new"] == -1 ) {
-                    $check = priv_check('', $specialvars["security"]["content"]);
+                    $check = priv_check('', $specialvars["security"]["content"],$specialvars["dyndb"]);
                 } elseif ( $specialvars["security"]["enable"] == -1) {
                     if ( $katzugriff == -1 && $dbzugriff == -1 ) $check = True;
                 } else {

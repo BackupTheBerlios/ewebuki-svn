@@ -46,26 +46,26 @@
     // aufruf: $priv_check(ebene,kategorie,database,$right);
     // funktion prueft rekursiv, ob die aktuelle url rechte in der $_SESSION["content"] besitzt !
 
-    function priv_check($url,$required) {
+    function priv_check($url,$required,$dbase="") { 
         global $cfg,$specialvars,$rechte;
-        if ( !function_exists(priv_check_path) ) {
-            function priv_check_path($url,$required,&$hit,&$del) {
+        if ( !function_exists(priv_check_path) ) {            
+            function priv_check_path($url,$required,&$hit,&$del,$dbase) {                
                 global $environment;
                 if ( $url == "" ) $url = $environment["ebene"]."/".$environment["kategorie"];
-                if ( is_array($_SESSION["content"] ) ){
+                if ( is_array($_SESSION["content"] ) ){                    
                     $array = explode(";",$required);
                     foreach ( $array as $value ) {
-                        if ( strpos($_SESSION["content"][$url]["del"],$value) !== False ) {
+                        if ( strpos($_SESSION["content"][$dbase][$url]["del"],$value) !== False ) {
                             $del[$value] = -1;
                         }
-                        if ( strpos($_SESSION["content"][$url]["add"],$value) !== False && $del[$value] != -1) {
+                        if ( strpos($_SESSION["content"][$dbase][$url]["add"],$value) !== False && $del[$value] != -1) {
                             $hit = True;
                         }
                     }
                 }
                 if ( $url != "/" ) {
                     $url = dirname($url);
-                    priv_check_path($url,$required,$hit,$del);
+                    priv_check_path($url,$required,$hit,$del,$dbase);
                 }
             }
         }
@@ -83,7 +83,7 @@
             $hit = "";
             $del= array();
             if ( $required != "" ) {
-                priv_check_path($url,$required,$hit,$del);
+                priv_check_path($url,$required,$hit,$del,$dbase);
             }
             return $hit;
         }
@@ -95,9 +95,9 @@
         $result = $db -> query($sql);
         while ( $all = $db -> fetch_array($result,1) ) {
             if ( $all["neg"] == -1 ) {
-                $hit[$url]["del"][$all["ggroup"]] .= $all["priv"].",";
+                $hit[$all["db"]][$url]["del"][$all["ggroup"]] .= $all["priv"].",";
             } else {
-                $hit[$url]["add"][$all["ggroup"]] .= $all["priv"].",";
+                $hit[$all["db"]][$url]["add"][$all["ggroup"]] .= $all["priv"].",";
             }
         }
         if ( $url != "/" ) {
