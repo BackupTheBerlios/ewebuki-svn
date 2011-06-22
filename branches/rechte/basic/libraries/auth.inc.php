@@ -273,10 +273,13 @@
                 $label = "#(".$funktion.")";
                 $end = "<br />";
             }
-            $tmp_base = $specialvars["dyndb"];
-            if ( $werte[2] == -1 ) $tmp_base = "";
-            $check = priv_check("/admin/".$funktion."/".$werte[0],$werte[1],$tmp_base);
-            if ( $check == True ) {
+            if ( $werte[2] == -1 ) {
+                $tmp_base = $specialvars["dyndb"];
+            }else {
+                $tmp_base = "";
+            }
+
+            if ( priv_check("/admin/".$funktion."/".$werte[0],$werte[1]) || priv_check("/admin/".$funktion."/".$werte[0],$werte[1],$tmp_base) ) {
                 $dataloop["authTools"][$funktion]["url"] = $pathvars["virtual"]."/admin/".$funktion."/".$werte[0].".html";
                 $dataloop["authTools"][$funktion]["label"] = $label;
                 $dataloop["authTools"][$funktion]["title"] = "#(".$funktion.")";

@@ -42,8 +42,7 @@
     URL: http://www.chaos.de
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-if ( $cfg["menued"]["modify"]["add"][2] == "" || priv_check('', $cfg["menued"]["modify"]["add"][2] ) ) {
+if ( $cfg["menued"]["modify"]["add"][2] == "" || priv_check('', $cfg["menued"]["modify"]["add"][2] ) || ($cfg["auth"]["menu"]["menued"][2] == -1 &&  priv_check('', $cfg["menued"]["modify"]["add"][2],$specialvars["dyndb"] ) ) ) {
         // page basics
         // ***
         #if ( count($_POST) == 0 ) {

@@ -46,7 +46,7 @@
     $kategorie2check = substr(make_ebene($environment["parameter"][1]),0,strpos(make_ebene($environment["parameter"][1]),"/"));
     $ebene2check = substr(make_ebene($environment["parameter"][1]),strpos(make_ebene($environment["parameter"][1]),"/"));
 
-    if ( $cfg["menued"]["modify"]["edit"][2] == "" || priv_check('', $cfg["menued"]["modify"]["edit"][2] ) ) {
+    if ( $cfg["menued"]["modify"]["edit"][2] == "" || priv_check('', $cfg["menued"]["modify"]["edit"][2] ) || ($cfg["auth"]["menu"]["menued"][2] == -1 &&  priv_check('', $cfg["menued"]["right"],$specialvars["dyndb"] ) ) ) {
 
         // page basics
         // ***

@@ -55,7 +55,7 @@
         $kategorie2check_2 = substr(make_ebene($refid["refid"]),0,strpos(make_ebene($refid["refid"]),"/"));
         $ebene2check_2 = substr(make_ebene($refid["refid"]),strpos(make_ebene($refid["refid"]),"/"));
 
-        if ( $cfg["menued"]["modify"]["sort"][2] == "" || priv_check('', $cfg["menued"]["modify"]["sort"][2] ) ) {
+        if ( $cfg["menued"]["modify"]["sort"][2] == "" || priv_check('', $cfg["menued"]["modify"]["sort"][2] ) || ($cfg["auth"]["menu"]["menued"][2] == -1 &&  priv_check('', $cfg["menued"]["modify"]["sort"][2],$specialvars["dyndb"] ) ) ) {
 
             if ( $environment["parameter"][1] == "up" ) {
                 $sql = "UPDATE ".$cfg["menued"]["db"]["menu"]["entries"]."
