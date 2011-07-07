@@ -216,11 +216,11 @@
                 if ( $cfg["kontakt"]["email"]["encoding"] != "") {
                     $header2 .= "Content-Type: text/plain; charset=".$cfg["kontakt"]["email"]["encoding"]."\r\n";
                 }
-                 if ( $cfg["kontakt"]["email"]["add_para"] ) {
+                if ( $cfg["kontakt"]["email"]["add_para"] ) {
                     $result = mail($email_adresse,$subject2,$message2,$header2,$cfg["kontakt"]["email"]["add_para"]);
-                 } else {
-                     $result = mail($email_adresse,$subject2,$message2,$header2);
-                 }
+                } else {
+                    $result = mail($email_adresse,$subject2,$message2,$header2);
+                }
                 if ( !$result ) $ausgaben["form_error"] .= "<font color='red'>#(error_result) (".htmlspecialchars($email_adresse).")</font><br />";
 
                 if ( $debugging["html_enable"] ){
