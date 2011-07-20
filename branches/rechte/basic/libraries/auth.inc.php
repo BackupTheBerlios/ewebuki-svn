@@ -129,19 +129,6 @@
 
              }
 
-            // wenn content_right on dann katzugriff array bauen
-            if ( $specialvars["security"]["enable"] == -1 ) {
-                $sql = "SELECT ".$cfg["auth"]["db"]["special"]["contentkey"].",
-                               ".$cfg["auth"]["db"]["special"]["dbasekey"].",
-                               ".$cfg["auth"]["db"]["special"]["tnamekey"]."
-                          FROM ".$cfg["auth"]["db"]["special"]["entries"]."
-                         WHERE ".$cfg["auth"]["db"]["special"]["userkey"]."='".$_SESSION["uid"]."'";
-                $result = $db -> query($sql);
-                while ( $data = $db -> fetch_array($result,$nop) ) {
-                    $_SESSION["katzugriff"][] = $data["content"].":".$data["sdb"].":".$data["stname"];
-                }
-            }
-
             // referer oder aktuelle seite
             if ( $cfg["auth"]["hidden"]["set"] == True ) {
                 $destination_src = $ausgaben["form_referer"];
