@@ -135,42 +135,6 @@
             }
 
             $database = $db->getDb();
-            if ( is_array($_SESSION["dbzugriff"]) ) {
-                // admin darf alles in seiner db !!
-                if ( in_array($database,$_SESSION["dbzugriff"]) && $rechte[$specialvars["security"]["overwrite"]] == -1 ) {
-                    $dbzugriff = -1;
-                    $katzugriff = -1;
-                // sperre fuer bestimmte templates
-                } elseif ( in_array($tname,(array)$specialvars["security"]["nochk"]) ) {
-                    $katzugriff = FALSE;
-                    $dbzugriff = FALSE;
-                // hier erfolgt der check wenn man kein admin ist und bei nicht gesperrten templates
-                } else {
-                    if (right_check("-1",$environment["ebene"],$environment["kategorie"],$database) != "") {
-                        $dbzugriff = -1;
-                        $katzugriff = -1;
-                    } else {
-                        $katzugriff = FALSE;
-                        $dbzugriff = FALSE;
-                    }
-                }
-            } else {
-                $dbzugriff = -1;
-                // admin darf alles
-                if ( $rechte[$specialvars["security"]["overwrite"]] == -1 ) {
-                    $katzugriff = -1;
-                // sperre fuer bestimmte templates
-                } elseif ( in_array($tname,(array)$specialvars["security"]["nochk"]) ) {
-                    $katzugriff = FALSE;
-                // hier erfolgt der check wenn man kein admin ist und bei nicht gesperrten templates
-                } else {
-                    if (right_check("-1",$environment["ebene"],$environment["kategorie"],$database) != "") {
-                        $katzugriff = -1;
-                    } else {
-                        $katzugriff = FALSE;
-                    }
-                }
-            }
 
             $replace = $row[1];
 
@@ -203,8 +167,6 @@
             if ( $specialvars["editlock"] == False && $tname != "auth" ) {
                 if ( $specialvars["security"]["new"] == -1 ) {
                     $check = priv_check('', $specialvars["security"]["content"],$specialvars["dyndb"]);
-                } elseif ( $specialvars["security"]["enable"] == -1) {
-                    if ( $katzugriff == -1 && $dbzugriff == -1 ) $check = True;
                 } else {
                     if ( $rechte["cms_edit"] == -1 ) $check = True;
                 }
