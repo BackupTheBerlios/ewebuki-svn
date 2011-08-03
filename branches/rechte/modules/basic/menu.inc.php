@@ -46,7 +46,7 @@
     if ( $debugging["html_enable"] ) $debugging["ausgabe"] .= "[ ** $script_name ** ]".$debugging["char"];
 
     $ebene = explode("/",$environment["ebene"]);
-
+    include $pathvars["moduleroot"]."libraries/function_menu_convert.inc.php";
     //
     // menupunkte level 1
     //
@@ -92,7 +92,7 @@
                 $right = -1;
                 $parser = -1;
             } else {
-                if ( priv_check("",$level1array["level"]) ) {
+                if ( priv_check(make_ebene($level1array["mid"]),$level1array["level"]) ) {
                     $right = -1;
                     $parser = -1;
                 } else {
