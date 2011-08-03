@@ -211,7 +211,7 @@
                 if ( $level2array["level"] == "" ) {
                     $right = -1;
                 } else {
-                    if ( priv_check('',$level2array["level"]) ) {
+                    if ( priv_check(make_ebene($level2array["mid"]),$level2array["level"]) ) {
                         $right = -1;
                     } else {
                         $right = 0;
@@ -295,8 +295,8 @@
                     if ( $cfg["menu"]["level3"]["enable"] == -1 ) {
                         if ( $level3array["level"] == "" ) {
                             $right = -1;
-                        } else {
-                            if ( priv_check('',$level3array["level"]) ) {
+                        } else {                            
+                            if ( priv_check(make_ebene($level3array["mid"]),$level3array["level"]) ) {
                                 $right = -1;
                             } else {
                                 $right = 0;
